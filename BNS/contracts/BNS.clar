@@ -50,9 +50,22 @@
 (define-read-only (get-last-token-id)
   (ok (var-get last-token-id)))
 
-(define-read-only (get-token-uri (token-id uint))
-  (ok (some (concat (var-get token-uri) (uint-to-ascii token-id)))))
+(define-private (is-valid-name (name (string-ascii 64)))
+  (and
+    (>= (len name) u3) ;; Minimum name length of 3 characters
+    (is-valid-name-chars name)
+  )
+)
+(define-private (is-valid-name (name (string-ascii 64)))
+  (and
+    (>= (len name) u3) ;; Minimum name length of 3 characters
+    (is-valid-name-chars name)
+  )
+)
 
+(define-private (is-valid-name-chars (name (string-ascii 64)))
+  (>= (len name) u3) ;; Minimum name length of 3 characters
+)
 (define-read-only (get-owner (token-id uint))
   (let ((name (map-get? token-id-to-name token-id)))
     (if (is-none name)
